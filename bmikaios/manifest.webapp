@@ -1,0 +1,22 @@
+{
+    "version": "1.0",
+    "name": "BMI Calculator",
+    "description": "Calculate Body Mass Index",
+    "launch_path": "/bmi.html",
+    "icons": {
+      "32": "/icons/minecraft32.png",
+      "48": "/icons/minecraft48.png",
+      "64": "/icons/minecraft64.png",
+      "128": "/icons/minecraft64.png"
+    },
+    "developer": {
+      "name": "Bhanu",
+      "url": "https://google.com"
+    },
+    "permissions": {
+      "telephony": {},
+      "power": {},
+      "storage": {}
+    }
+  }
+  

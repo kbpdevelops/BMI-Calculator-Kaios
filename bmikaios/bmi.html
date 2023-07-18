@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>BMI Calculator</title>
+</head>
+
+<body>
+  <h1>BMI Calculator</h1>
+  <div>
+    <label for="weight">Weight (kg):</label>
+    <input type="number" id="weight" class="items" tabindex="1" />
+  </div>
+  <div>
+    <label for="height">Height (cm):</label>
+    <input type="number" id="height" class="items" tabindex="2" />
+  </div>
+  <button id="calculate" class="items" tabindex="3">Calculate BMI</button>
+  <div id="result" tabindex="4"></div>
+
+  <button id="reset" class="items" tabindex="5">Reset</button>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const weightInput = document.getElementById('weight');
+      weightInput.focus();
+    });
+    document.addEventListener('keydown', handleKeydown);
+
+    function handleKeydown(e) {
+      switch (e.key) {
+        case 'ArrowUp':
+          e.preventDefault();
+          nav(-1);
+          break;
+        case 'ArrowDown':
+          e.preventDefault();
+          nav(1);
+          break;
+        default:
+          handleNumericKeypadInput(e);
+          break;
+      }
+    }
+    function handleNumericKeypadInput(e) {
+      // Check if the key pressed is a numeric key
+      if (/^\d$/.test(e.key)) {
+        const inputElement = document.activeElement;
+        if (inputElement.tagName === 'INPUT') {
+          // If an input element is focused and a numeric key is pressed,
+          // add the key value to the input value
+          e.preventDefault();
+          inputElement.value += e.key;
+        }
+      }
+    }
+
+    function nav(move) {
+      const currentIndex = document.activeElement.tabIndex;
+      const next = currentIndex + move;
+      const items = document.querySelectorAll('.items');
+      const targetElement = items[next - 1]; // Adjust the index since tabIndex starts from 1
+      if (targetElement) {
+        targetElement.focus();
+      }
+    }
+
+    document.getElementById('calculate').addEventListener('click', calculateBMI);
+
+    function calculateBMI() {
+      const weight = parseFloat(document.getElementById('weight').value);
+      const height = parseFloat(document.getElementById('height').value);
+
+      if (isNaN(weight) || isNaN(height) || height <= 0) {
+        document.getElementById('result').textContent = 'Invalid input';
+        return;
+      }
+
+      const bmi = weight / ((height / 100) * (height / 100));
+      const bmiCategory = getBMICategory(bmi);
+
+      document.getElementById('result').textContent = `BMI: ${bmi.toFixed(2)} (${bmiCategory})`;
+    }
+
+    function getBMICategory(bmi) {
+      if (bmi < 18.5) {
+        return 'Underweight';
+      } else if (bmi >= 18.5 && bmi < 24.9) {
+        return 'Normal weight';
+      } else if (bmi >= 25 && bmi < 29.9) {
+        return 'Overweight';
+      } else {
+        return 'Obese';
+      }
+    }
+
+    document.getElementById('reset').addEventListener('click', resetFields);
+
+    function resetFields() {
+      const weightInput = document.getElementById('weight');
+    const heightInput = document.getElementById('height');
+
+    // Clear the input fields and the result div
+    weightInput.value = '';
+    heightInput.value = '';
+    document.getElementById('result').textContent = '';
+
+    // Set the focus back to the "Weight" input field
+    weightInput.blur(); // Remove focus from the active element
+    weightInput.focus(); // Set focus to the "Weight" input field
+    }
+  </script>
+</body>
+
+</html>
